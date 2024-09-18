@@ -13,7 +13,6 @@ class DBConfig(BaseSettings):
     def full_database_url(self) -> str:
         return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 
-
     class Config:
         env_file = ".env"
         extra = "ignore"

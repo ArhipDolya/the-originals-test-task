@@ -1,10 +1,10 @@
-from sqlalchemy import Column, Integer, String, Enum
+from sqlalchemy import Column, Enum, Integer, String
 from sqlalchemy.orm import relationship
 
 from app.db.common.enums import RoleEnum
+from app.db.models.associations import task_assignee
 from app.db.models.base import TimedBaseModel
 from app.db.models.task import Task
-from app.db.models.associations import task_assignee
 
 
 class User(TimedBaseModel):
@@ -17,11 +17,18 @@ class User(TimedBaseModel):
     role = Column(Enum(RoleEnum), nullable=False, default=RoleEnum.USER)
 
     # Relationships
-    responsible_for_tasks = relationship("Task", back_populates="responsible_person", foreign_keys=[Task.responsible_person_id], cascade="all, delete-orphan")
-    assigned_tasks = relationship("Task", secondary=task_assignee, back_populates="assignees")
+    responsible_for_tasks = relationship(
+        "Task",
+        back_populates="responsible_person",
+        foreign_keys=[Task.responsible_person_id],
+        cascade="all, delete-orphan",
+    )
+    assigned_tasks = relationship(
+        "Task", secondary=task_assignee, back_populates="assignees"
+    )
 
     def __str__(self):
         return f"<User(id={self.id}, username={self.username}, role={self.role})>"
-    
+
     def __repr__(self):
         return self.__str__()

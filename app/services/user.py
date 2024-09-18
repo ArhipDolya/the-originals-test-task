@@ -1,15 +1,18 @@
 from abc import ABC, abstractmethod
 
 from fastapi import Depends
-
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.main import get_db
 from app.db.models.user import User
 from app.repositories.user import UserRepository
 from app.services.auth import get_hashed_password, verify_password
-from app.services.exceptions.user import InvalidCredentialsError, UserAlreadyExistsError, UserNotFoundError
+from app.services.exceptions.user import (
+    InvalidCredentialsError,
+    UserAlreadyExistsError,
+    UserNotFoundError,
+)
 
 
 class BaseUserService(ABC):
@@ -33,13 +36,17 @@ class UserService(BaseUserService):
     async def register_user(self, username: str, email: str, password: str) -> User:
         if not username or not email or not password:
             raise ValueError("Username, email, and password are required")
-        
+
         hashed_password = get_hashed_password(password)
         try:
-            new_user = await self.user_repository.create(username=username, email=email, hashed_password=hashed_password)
+            new_user = await self.user_repository.create(
+                username=username, email=email, hashed_password=hashed_password
+            )
             return new_user
         except IntegrityError:
-            raise UserAlreadyExistsError("A user with this username or email already exists")
+            raise UserAlreadyExistsError(
+                "A user with this username or email already exists"
+            )
 
     async def authenticate_user(self, username: str, password: str) -> User:
         if not username or not password:
@@ -60,7 +67,7 @@ class UserService(BaseUserService):
 
         if not user:
             raise UserNotFoundError("User not found")
-        
+
         return user
 
 

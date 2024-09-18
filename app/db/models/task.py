@@ -1,9 +1,9 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Text, Enum
+from sqlalchemy import Column, Enum, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from app.db.common.enums import PriorityEnum, StatusEnum
-from app.db.models.base import TimedBaseModel
 from app.db.models.associations import task_assignee
+from app.db.models.base import TimedBaseModel
 
 
 class Task(TimedBaseModel):
@@ -15,13 +15,20 @@ class Task(TimedBaseModel):
     responsible_person_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     status = Column(Enum(StatusEnum), nullable=False, default=StatusEnum.TODO)
     priority = Column(Enum(PriorityEnum), nullable=False, default=PriorityEnum.MEDIUM)
-    
+
     # Relationships
-    responsible_person = relationship("User", foreign_keys=[responsible_person_id], back_populates="responsible_for_tasks", passive_deletes=True)
-    assignees = relationship("User", secondary=task_assignee, back_populates="assigned_tasks")
+    responsible_person = relationship(
+        "User",
+        foreign_keys=[responsible_person_id],
+        back_populates="responsible_for_tasks",
+        passive_deletes=True,
+    )
+    assignees = relationship(
+        "User", secondary=task_assignee, back_populates="assigned_tasks"
+    )
 
     def __str__(self):
         return f"<Task(id={self.id}, title={self.title}, status={self.status}, priority={self.priority})>"
-    
+
     def __repr__(self):
         return self.__str__()

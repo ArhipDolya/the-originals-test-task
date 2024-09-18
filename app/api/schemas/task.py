@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from app.db.common.enums import StatusEnum, PriorityEnum
+from app.db.common.enums import PriorityEnum, StatusEnum
 
 
 class TaskBase(BaseModel):

@@ -1,6 +1,6 @@
-from sqlalchemy import Table, Column, ForeignKey, Integer
-from app.db.models.base import TimedBaseModel
+from sqlalchemy import Column, ForeignKey, Integer, Table
 
+from app.db.models.base import TimedBaseModel
 
 task_assignee = Table(
     "task_assignee",
