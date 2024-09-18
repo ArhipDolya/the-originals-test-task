@@ -3,12 +3,11 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.exc import IntegrityError
 
 from app.api.schemas.token import RefreshTokenResponseSchema, TokenResponseSchema
-from app.api.schemas.user import UserLoginSchema, UserRegisterSchema, UserResponseSchema
+from app.api.schemas.user import UserRegisterSchema, UserResponseSchema
 from app.services.auth import (
     create_access_token,
     create_refresh_token,
     decode_access_token,
-    verify_password,
 )
 from app.services.exceptions.user import InvalidCredentialsError, UserNotFoundError
 from app.services.user import BaseUserService, get_user_service

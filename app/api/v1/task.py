@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 
-from app.api.exceptions.task import UnauthorizedException
 from app.api.schemas.task import TaskCreate, TaskResponse, TaskUpdate
 from app.db.common.enums import RoleEnum, StatusEnum
 from app.services.auth import get_current_user, role_required
 from app.services.exceptions.task import TaskNotFoundException
-from app.services.task import BaseTaskService, TaskService, get_task_service
+from app.services.task import BaseTaskService, get_task_service
 from app.services.user import BaseUserService, get_user_service
 
 router = APIRouter(prefix="/api/v1", tags=["Tasks"])

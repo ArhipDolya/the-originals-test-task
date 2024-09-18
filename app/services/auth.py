@@ -1,12 +1,11 @@
 from datetime import datetime, timedelta
 
-from fastapi import Depends, HTTPException, Security, status
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 from app.db.common.enums import RoleEnum
-from app.db.models.user import User
 from app.settings.config import get_config
 
 config = get_config()
